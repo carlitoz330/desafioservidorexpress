@@ -15,10 +15,9 @@ class Contenedor {
 
     async getById (id) {
         const datos = await this.getAll();
-        const productoB = datos.filter((producto) => producto.id == id)
-        console.log(productoB)
-
-
+        const productoB = JSON.stringify(datos.filter((producto) => producto.id == id), null, 2)
+        console.log(`este es el producto por id ${productoB}`)
+        return productoB  
     }
 
     async getAll () {
@@ -46,17 +45,17 @@ app.get("/", (req, resp) => {
 
 })
 
-app.get("/productos", (req, resp) => {
+app.get("/productos", async (req, resp) => {
     //resp.send(`<p>Pagina de productos</p>`)
-    resp.send(contenedor1.getAll())
+    resp.send(await contenedor1.getAll())
     
 })
 
-app.get("/productorandom", (req, resp) => {
+app.get("/productorandom", async (req, resp) => {
     
     const random = Math.floor((Math.random() * 4) + 1);
-    resp.send(contenedor1.getById(random))
-
+    resp.send(await contenedor1.getById(random))
+    console.log(`este es el random ${random}`)
 })
 
 let contenedor1 = new Contenedor("productos.txt")
